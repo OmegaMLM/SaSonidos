@@ -98,9 +98,6 @@ const FormNewBlog = ({ blog }: Props) => {
       )}
 
       <div>
-        <label className="text-sm font-medium text-default-600 mb-1 block">
-          Imagen destacada
-        </label>
         <ImageForm
           value={formik.values.image}
           onChange={(url: string) => formik.setFieldValue('image', url)}
