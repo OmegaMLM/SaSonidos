@@ -18,7 +18,7 @@ const FormNewBlog = ({blog}: props) => {
         image: '',
     },
     validationSchema: Yup.object({
-        title: Yup.string().max(20, 'Debe tener como maximo 20 caracteres').required('Requerido'),
+        title: Yup.string().max(40, 'Debe tener como maximo 20 caracteres').required('Requerido'),
         content: Yup.string().required('Requerido'),
         image: Yup.string().required('Requerido'),
     }),
@@ -57,6 +57,8 @@ const FormNewBlog = ({blog}: props) => {
           color: "danger",
           timeout: 2000,
           shouldShowTimeoutProgress: true,
+        
+        
         });
       }
     }  

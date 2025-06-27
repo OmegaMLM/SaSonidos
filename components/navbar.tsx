@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -25,28 +27,11 @@ import {
   SearchIcon,
   Logo,
 } from "@/components/icons";
+import SignIn from "./forms/SignInForm";
+import { signOut, useSession } from "next-auth/react";
 
 export const Navbar = () => {
-  const searchInput = (
-    <Input
-      aria-label="Search"
-      classNames={{
-        inputWrapper: "bg-default-100",
-        input: "text-sm",
-      }}
-      endContent={
-        <Kbd className="hidden lg:inline-block" keys={["command"]}>
-          K
-        </Kbd>
-      }
-      labelPlacement="outside"
-      placeholder="Search..."
-      startContent={
-        <SearchIcon className="text-base text-default-400 pointer-events-none flex-shrink-0" />
-      }
-      type="search"
-    />
-  );
+  const {data: session, status} = useSession();
 
   return (
     <HeroUINavbar maxWidth="xl" position="sticky">
@@ -71,7 +56,21 @@ export const Navbar = () => {
                 {item.label}
               </NextLink>
             </NavbarItem>
+            
           ))}
+          {status === "authenticated" && 
+          
+              <NextLink
+                className={clsx(
+                  linkStyles({ color: "foreground" }),
+                  "data-[active=true]:text-primary data-[active=true]:font-medium",
+                )}
+                color="foreground"
+                href={"/blog"}
+              >
+                Blog
+              </NextLink>
+          }
         </ul>
       </NavbarContent>
 
@@ -92,16 +91,17 @@ export const Navbar = () => {
           <ThemeSwitch />
         </NavbarItem>
         <NavbarItem className="hidden md:flex">
-          <Button
-            isExternal
-            as={Link}
-            className="text-sm font-normal text-default-600 bg-default-100"
-            href={siteConfig.links.sponsor}
-            startContent={<HeartFilledIcon className="text-danger" />}
-            variant="flat"
-          >
-            Sponsor
-          </Button>
+            {status === "unauthenticated" && <SignIn />}
+            {status === "authenticated" && (
+              <Button
+                onPress={() => {
+                  signOut();
+                }}
+              >
+                {session.user?.name}
+              </Button>
+            )}
+
         </NavbarItem>
       </NavbarContent>
 

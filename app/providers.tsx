@@ -1,5 +1,5 @@
 "use client";
-
+import { SessionProvider } from "next-auth/react";
 import type { ThemeProviderProps } from "next-themes";
 
 import * as React from "react";
@@ -26,8 +26,10 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
   return (
     <HeroUIProvider navigate={router.push}>
-      <ToastProvider />
-      <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+      <SessionProvider>
+        <ToastProvider />
+        <NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
+      </SessionProvider>
     </HeroUIProvider>
   );
 }
