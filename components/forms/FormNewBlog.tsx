@@ -4,12 +4,13 @@ import {Form, Input, Button, image, addToast} from "@heroui/react";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Blog } from '@/types';
+import ImageForm from "./ImageForm";
 interface props {
     blog: Blog | null
 }
 
 const FormNewBlog = ({blog}: props) => {
-  const endpoint = blog ? `/api/blog/edit` : "/api/blogs";
+  const endpoint = blog ? `/api/blog/edit` : "/api/blog";
     const formik = useFormik({
     enableReinitialize: true,
     initialValues: blog ? {...blog}: {
@@ -96,19 +97,8 @@ const FormNewBlog = ({blog}: props) => {
   <p className="text-red-500 text-sm">{formik.errors.content}</p>
 )}
 
-      <Input
-      id='image'
-      label="Imagen"
-      labelPlacement='outside'
-      name='image'
-      placeholder='Ingrese la url de una imagen'
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      value={formik.values.image}
-      />
-      {formik.touched.image && formik.errors.image && (
-  <p className="text-red-500 text-sm">{formik.errors.image}</p>
-)}
+      
+    <ImageForm values={formik.values.image} onChange={(e:string) => formik.setFieldValue('image',e)} />
 
       <div className="flex gap-2">
         <Button color="primary" type="submit">
