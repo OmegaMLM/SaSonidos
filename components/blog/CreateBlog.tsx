@@ -7,7 +7,7 @@ const CreateBlog = () => {
     <div>
         <h2>Panel de Administracion de Blogs</h2>
         <BlogTable />
-        <FormNewBlog />
+        
     </div>
   )
 }

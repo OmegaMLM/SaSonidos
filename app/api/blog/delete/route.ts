@@ -1,17 +1,11 @@
-import { createBlog, getBlogs } from "@/components/blog/actions/blog-actions";
-import { Blog } from "@/types";
+import { deleteBlog } from "@/components/blog/actions/blog-actions";
 import { NextResponse } from "next/server";
-
-export async function GET() {
-    const blogs = await getBlogs();
-    return NextResponse.json(blogs);
-}
 
 export async function POST(req: Request) {
   try {
-    const data = await req.json();
+    const id = await req.json();
 
-    const res = await createBlog(data);
+    const res = await deleteBlog(id);
 
     return NextResponse.json(res, { status: 201 }); // Devuelve con status 201 = creado
   } catch (error) {
@@ -23,5 +17,3 @@ export async function POST(req: Request) {
     );
   }
 }
-
-

@@ -10,3 +10,9 @@ export type Blog = {
   content: string;
   image: string;
 };
+
+export type BlogForm = {
+  title: string;
+  content: string;
+  image: string;
+};
