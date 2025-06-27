@@ -54,5 +54,7 @@ export const siteConfig = {
     docs: "https://heroui.com",
     discord: "https://discord.gg/9b6yyZKmH4",
     sponsor: "https://patreon.com/jrgarciadev",
+    instagram: "https://www.instagram.com/sa.sonidos.multimedia?igsh=MTVqN212dzBkZzV1Yg==",
+    facebook: "https://www.facebook.com/jrgarciadev/",
   },
 };

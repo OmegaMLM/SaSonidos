@@ -29,8 +29,12 @@ export const BlogTable = () => {
   }, []);
 
   if (loading) {
-    return <Spinner label="Cargando blogs..." color="primary" />;
-  }
+  return (
+    <div className="flex items-center justify-center h-[60vh]">
+      <Spinner label="Cargando blogs..." color="primary" />
+    </div>
+  );
+}
   const handleEdit = (blog: Blog) => {
     setBlog(blog);
   }
@@ -63,29 +67,40 @@ export const BlogTable = () => {
   }
   }
   return (
-    <div className="overflow-x-auto p-4">
-      <Table>
-        <TableHeader>
-            <TableColumn>Título</TableColumn>
-            <TableColumn>Contenido</TableColumn>
-            <TableColumn>Actions</TableColumn>
-        </TableHeader>
-        <TableBody>
-          {blogs.map((blog) => (
-            <TableRow key={blog.id}>
-              <TableCell>{blog.title}</TableCell>
-              <TableCell>{blog.content}</TableCell>
-              <TableCell>
-                <Button onPress={() => handleEdit(blog)} color="warning">Editar</Button>
-                <Button onPress={() => handleDelete(blog.id)} color="danger">Eliminar</Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <div className="overflow-x-auto p-4 space-y-8">
+  <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-md">
+    <h2 className="text-xl font-semibold mb-4">Lista de Blogs</h2>
+    <Table isStriped aria-label="Lista de blogs">
+      <TableHeader>
+        <TableColumn>Título</TableColumn>
+        <TableColumn>Contenido</TableColumn>
+        <TableColumn>Acciones</TableColumn>
+      </TableHeader>
+      <TableBody>
+        {blogs.map((blog) => (
+          <TableRow key={blog.id}>
+            <TableCell>{blog.title}</TableCell>
+            <TableCell className="max-w-[250px] truncate">{blog.content}</TableCell>
+            <TableCell className="flex gap-2">
+              <Button onPress={() => handleEdit(blog)} color="warning" size="sm">
+                Editar
+              </Button>
+              <Button onPress={() => handleDelete(blog.id)} color="danger" size="sm">
+                Eliminar
+              </Button>
+            </TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </div>
 
-      <FormNewBlog blog = {blog} />
-    </div>
+  <div className="bg-white dark:bg-zinc-900 p-6 rounded-2xl shadow-md">
+    <h2 className="text-xl font-semibold mb-4">{blog ? "Editar Blog" : "Nuevo Blog"}</h2>
+    <FormNewBlog blog={blog} />
+  </div>
+</div>
+
 
   );
 };

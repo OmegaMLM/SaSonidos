@@ -1,31 +1,34 @@
-'use client'
+'use client';
 
-import {Form, Input, Button, image, addToast} from "@heroui/react";
+import { Form, Input, Button, addToast } from "@heroui/react";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Blog } from '@/types';
 import ImageForm from "./ImageForm";
-interface props {
-    blog: Blog | null
+
+interface Props {
+  blog: Blog | null;
 }
 
-const FormNewBlog = ({blog}: props) => {
+const FormNewBlog = ({ blog }: Props) => {
   const endpoint = blog ? `/api/blog/edit` : "/api/blog";
-    const formik = useFormik({
+
+  const formik = useFormik({
     enableReinitialize: true,
-    initialValues: blog ? {...blog}: {
-        title: '',
-        content: '',
-        image: '',
+    initialValues: blog ? { ...blog } : {
+      title: '',
+      content: '',
+      image: '',
     },
     validationSchema: Yup.object({
-        title: Yup.string().max(40, 'Debe tener como maximo 20 caracteres').required('Requerido'),
-        content: Yup.string().required('Requerido'),
-        image: Yup.string().required('Requerido'),
+      title: Yup.string()
+        .max(40, 'Debe tener como máximo 40 caracteres')
+        .required('Requerido'),
+      content: Yup.string().required('Requerido'),
+      image: Yup.string().required('Requerido'),
     }),
     onSubmit: async (values, { resetForm }) => {
       try {
-        
         const res = await fetch(endpoint, {
           method: "POST",
           headers: {
@@ -33,19 +36,17 @@ const FormNewBlog = ({blog}: props) => {
           },
           body: JSON.stringify(values),
         });
-    
+
         if (!res.ok) throw new Error("Error al crear el blog");
-    
+
         const data = await res.json();
         console.log("Blog creado:", data);
-    
-        // opcional: limpiar el formulario
+
         resetForm();
-    
-        // opcional: mostrar alerta o redireccionar
+
         addToast({
-          title: "Blog creado",
-          description: "El blog se ha creado correctamente",
+          title: blog ? "Blog actualizado" : "Blog creado",
+          description: `El blog se ha ${blog ? "actualizado" : "creado"} correctamente`,
           color: "success",
           timeout: 2000,
           shouldShowTimeoutProgress: true,
@@ -53,64 +54,72 @@ const FormNewBlog = ({blog}: props) => {
       } catch (error) {
         console.error("Error al enviar blog:", error);
         addToast({
-          title: "Error en el blog",
-          description: "El blog no se creo correctamente",
+          title: "Error",
+          description: "Hubo un problema al enviar el blog",
           color: "danger",
           timeout: 2000,
           shouldShowTimeoutProgress: true,
-        
-        
         });
       }
-    }  
+    },
   });
 
   return (
-    <Form onSubmit={formik.handleSubmit}
-      className="w-full max-w-xs flex flex-col gap-4"
+    <Form
+      onSubmit={formik.handleSubmit}
+      className="w-full max-w-md mx-auto flex flex-col gap-6"
     >
       <Input
-      id='title'
-      label="Titulo"
-      labelPlacement='outside'
-      name='title'
-      placeholder='Ingrese un titulo'
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      value={formik.values.title}
+        id="title"
+        label="Título"
+        labelPlacement="outside"
+        name="title"
+        placeholder="Ingrese un título"
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.title}
       />
       {formik.touched.title && formik.errors.title && (
-  <p className="text-red-500 text-sm">{formik.errors.title}</p>
-)}
+        <p className="text-red-500 text-sm">{formik.errors.title}</p>
+      )}
 
       <Input
-      id='content'
-      label="Contenido"
-      labelPlacement='outside'
-      name='content'
-      placeholder='Ingrese un contenido'
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      value={formik.values.content}
+        id="content"
+        label="Contenido"
+        labelPlacement="outside"
+        name="content"
+        placeholder="Ingrese el contenido del blog"
+        onChange={formik.handleChange}
+        onBlur={formik.handleBlur}
+        value={formik.values.content}
       />
-        {formik.touched.content && formik.errors.content && (
-  <p className="text-red-500 text-sm">{formik.errors.content}</p>
-)}
+      {formik.touched.content && formik.errors.content && (
+        <p className="text-red-500 text-sm">{formik.errors.content}</p>
+      )}
 
-      
-    <ImageForm values={formik.values.image} onChange={(e:string) => formik.setFieldValue('image',e)} />
+      <div>
+        <label className="text-sm font-medium text-default-600 mb-1 block">
+          Imagen destacada
+        </label>
+        <ImageForm
+          value={formik.values.image}
+          onChange={(url: string) => formik.setFieldValue('image', url)}
+        />
+        {formik.touched.image && formik.errors.image && (
+          <p className="text-red-500 text-sm mt-1">{formik.errors.image}</p>
+        )}
+      </div>
 
-      <div className="flex gap-2">
+      <div className="flex gap-3 justify-end">
         <Button color="primary" type="submit">
-          Submit
+          {blog ? "Actualizar" : "Crear"}
         </Button>
-        <Button type="reset" variant="flat">
+        <Button type="reset" variant="flat" onClick={formik.handleReset}>
           Reset
         </Button>
       </div>
-      
     </Form>
-  )
-}
+  );
+};
 
-export default FormNewBlog
+export default FormNewBlog;
