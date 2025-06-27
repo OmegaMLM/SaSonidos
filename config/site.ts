@@ -55,6 +55,6 @@ export const siteConfig = {
     discord: "https://discord.gg/9b6yyZKmH4",
     sponsor: "https://patreon.com/jrgarciadev",
     instagram: "https://www.instagram.com/sa.sonidos.multimedia?igsh=MTVqN212dzBkZzV1Yg==",
-    facebook: "https://www.facebook.com/jrgarciadev/",
+    facebook: "https://www.facebook.com/share/1GjDVn2j4D/?mibextid=wwXIfr",
   },
 };
