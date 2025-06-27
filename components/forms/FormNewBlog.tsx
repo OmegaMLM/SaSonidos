@@ -28,6 +28,16 @@ const FormNewBlog = () => {
       />
 
       <Input
+      label="Contenido"
+      labelPlacement='outside'
+      name='content'
+      placeholder='Ingrese un contenido'
+      />
+      <Input
+      label="Imagen"
+      labelPlacement='outside'
+      name='image'
+      placeholder='Ingrese la url de una imagen'
       />
       <div className="flex gap-2">
         <Button color="primary" type="submit">
